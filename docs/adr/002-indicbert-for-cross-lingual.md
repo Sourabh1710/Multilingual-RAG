@@ -1,0 +1,3 @@
+# why we are using a multilingual aligned vector space for search instead of a "Translate Query -> Search -> Translate Answer" pipeline ?
+- Suppose I have entered a query in Hinglish for an English document. The regular RAG pipeline can struggle with the
+  translation of domain-specific jargons, technical terms and colloquialisms. As code-mixed language (i.e; Hinglish) doesn't follow grammatical rules. The naive translator can mishandle the Hinglish sentences which will destroy the semantic intent before it reaches back to user. And in the loop the model has to call translation API two times for a single query which increases the API cost.  

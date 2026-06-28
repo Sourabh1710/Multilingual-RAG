@@ -1,0 +1,15 @@
+# Local virtual environments
+venv/
+.venv/
+
+# Python compiled bytecode
+__pycache__/
+*.pyc
+
+# Secret API keys and environment variables
+.env
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
