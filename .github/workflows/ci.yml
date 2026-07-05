@@ -40,4 +40,7 @@ jobs:
 
       # Run the entire testing suite (both unit and integration tests)
       - name: Run Testing Suite
+        env:
+          GEMINI_API_KEY: dummy_key_for_testing_purposes_only
+          GROQ_API_KEY: dummy_key_for_testing_purposes_only
         run: uv run pytest
