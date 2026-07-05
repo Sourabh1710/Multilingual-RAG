@@ -28,7 +28,7 @@ jobs:
 
       # 4. Synchronize dependencies cleanly
       - name: Install Dependencies
-        run: uv sync --frozen
+        run: uv sync --frozen --all-extras
 
       # 5. Run Black formatting check
       - name: Run Black

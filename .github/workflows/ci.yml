@@ -32,7 +32,7 @@ jobs:
         run: uv python install 3.12
 
       - name: Install Dependencies
-        run: uv sync --frozen
+        run: uv sync --frozen --all-extras
 
       # Force PyTorch to use CPU-only during CI to keep runner memory small
       - name: Install CPU PyTorch
