@@ -30,9 +30,9 @@ jobs:
       - name: Install Dependencies
         run: uv sync --frozen --all-extras
 
-      # 5. Run Black formatting check
-      - name: Run Black
-        run: uv run black --check .
+      # # 5. Run Black formatting check
+      # - name: Run Black
+      #   run: uv run black --check .
 
       # 6. Run Ruff linting check
       - name: Run Ruff

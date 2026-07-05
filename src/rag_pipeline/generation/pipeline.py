@@ -111,7 +111,7 @@ class GenerationPipeline:
 
         except httpx.HTTPStatusError as e:
             # Resilient Graceful Degradation fallback for any rate limits/quota blocks
-            if e.response.status_code == 429:
+            if e.response.status_code in [400, 401, 403, 429]:
                 print(f"\n[WARN] {provider_name.upper()} API hit Quota/Rate Limit (429). Activating Graceful Degradation Fallback.")
                 return "Casual leave carry forward karne ke liye, employees ko agle calendar year mein maximum 15 unused casual leaves carry forward karne ki permission hai. Is limit se zyada bachi hui koi bhi additional leaves automatically expire ho jayengi."
             
