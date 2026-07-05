@@ -1,8 +1,14 @@
 # Multilingual Indic RAG Pipeline with Automated Evaluations
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sourabhsonker-multilingual-rag.streamlit.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python: 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
+
 A production-grade, highly performant, and fully asynchronous Retrieval-Augmented Generation (RAG) system. This pipeline accepts user queries in **Hindi or Hinglish (Hindi-English code-mixed)**, performs semantic cross-lingual retrieval over an **English-only document corpus**, and generates highly grounded, faithful answers natively in Hindi or Hinglish.
 
-This repository is engineered to mirror professional AI/ML microservice standards, featuring a modular multi-model architecture, static type safety, containerized orchestration, automated integration testing, and continuous integration pipelines.
+🔗 **Live Interactive Application:** [sourabhsonker-multilingual-rag.streamlit.app](https://sourabhsonker-multilingual-rag.streamlit.app/)
+
+---
 
 ---
 
