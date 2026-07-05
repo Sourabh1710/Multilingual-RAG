@@ -24,20 +24,10 @@ st.set_page_config(
 
 @st.cache_resource
 def get_pipelines():
-    qdrant_host = os.getenv("QDRANT_HOST", "localhost")
-    qdrant_port = int(os.getenv("QDRANT_PORT", 6333))
-    qdrant_api_key = os.getenv("QDRANT_API_KEY")
-    
     ingest = IngestionPipeline(chunk_size=800, chunk_overlap=150)
     embed = EmbeddingPipeline(collection_name=COLLECTION_NAME)
     retrieval = RetrievalPipeline(collection_name=COLLECTION_NAME)
-    generation = GenerationPipeline() 
-    
-    if qdrant_api_key:
-        from qdrant_client import AsyncQdrantClient
-        embed.store.client = AsyncQdrantClient(url=qdrant_host, api_key=qdrant_api_key)
-        retrieval.store.client = AsyncQdrantClient(url=qdrant_host, api_key=qdrant_api_key)
-        
+    generation = GenerationPipeline()     
     return ingest, embed, retrieval, generation
 
 ingest_pipeline, embed_pipeline, retrieval_pipeline, generation_pipeline = get_pipelines()

@@ -8,26 +8,27 @@ from rag_pipeline.ingestion.chunker import Chunk
 
 
 class QdrantStore:
-    def __init__(self, host: Optional[str] = None, port: Optional[int] = None) -> None:
+    def __init__(self, host: Optional[str] = None, port: Optional[int] = None, api_key: Optional[str] = None) -> None:
         """
         Initializes the asynchronous Qdrant Client.
         Dynamically reads host and port from environment variables to support Docker.
         """
         # 1. Read host and port from environment variables if not passed explicitly
         qdrant_host = host or os.getenv("QDRANT_HOST", "localhost")
+        qdrant_api_key = api_key or os.getenv("QDRANT_API_KEY")
 
-        # Read the environment port as a string (completely separate from 'port' parameter)
-        env_port = os.getenv("QDRANT_PORT", "6333")
-
-        # If an explicit port was passed, use its string representation; otherwise use env_port
-        port_str = str(port) if port is not None else env_port
-
-        try:
-            qdrant_port = int(port_str)
-        except ValueError:
-            qdrant_port = 6333
-
-        self.client = AsyncQdrantClient(host=qdrant_host, port=qdrant_port)
+        # If the host is a full URL (cloud endpoint), use the 'url' parameter
+        if qdrant_host.startswith("http://") or qdrant_host.startswith("https://"):
+            self.client = AsyncQdrantClient(url=qdrant_host, api_key=qdrant_api_key)
+        else:
+            # Otherwise, use standard host and port parameters for local connections
+            port_str = str(port) if port is not None else os.getenv("QDRANT_PORT", "6333")
+            try:
+                qdrant_port = int(port_str)
+            except ValueError:
+                qdrant_port = 6333
+            
+            self.client = AsyncQdrantClient(host=qdrant_host, port=qdrant_port, api_key=qdrant_api_key)
 
     async def create_collection(self, collection_name: str, vector_size: int) -> None:
         """
