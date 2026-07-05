@@ -1,6 +1,6 @@
 import os
 import httpx
-from typing import List, Optional, Dict, Any
+from typing import List, Dict, Any
 from dotenv import load_dotenv
 from rag_pipeline.ingestion.chunker import Chunk
 from rag_pipeline.generation.prompts import SYSTEM_PROMPT, format_prompt
