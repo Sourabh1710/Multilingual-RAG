@@ -1,0 +1,43 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Run Pytest Suite
+    runs-on: ubuntu-latest
+
+    # Spin up Qdrant as a background service inside the GitHub runner
+    services:
+      qdrant:
+        image: qdrant/qdrant:latest
+        ports:
+          - 6333:6333
+          - 6334:6334
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install Dependencies
+        run: uv sync --frozen
+
+      # Force PyTorch to use CPU-only during CI to keep runner memory small
+      - name: Install CPU PyTorch
+        run: uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+      # Run the entire testing suite (both unit and integration tests)
+      - name: Run Testing Suite
+        run: uv run pytest

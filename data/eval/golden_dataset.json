@@ -1,0 +1,12 @@
+[
+  {
+    "question": "Casual leave carry forward karne ke rules kya hain?",
+    "ground_truth": "Employees ko agle calendar year mein maximum 15 unused casual leaves carry forward karne ki permission hai. Is limit se zyada bachi hui koi bhi additional leaves automatically expire ho jayengi.",
+    "expected_context": "employees are permitted to carry forward a maximum of 15 unused casual leaves into the next calendar year. Any additional remaining leaves beyond this limit will automatically expire."
+  },
+  {
+    "question": "कंपनी की लीव पॉलिसी के तहत हम कितनी छुट्टियां कैरी फॉरवर्ड कर सकते हैं?",
+    "ground_truth": "कंपनी की पॉलिसी के अनुसार, कर्मचारी अगले साल में अधिकतम 15 बिना इस्तेमाल की गई कैजुअल लीव्स (casual leaves) कैरी फॉरवर्ड कर सकते हैं।",
+    "expected_context": "employees are permitted to carry forward a maximum of 15 unused casual leaves into the next calendar year."
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "timestamp": 1783187898,
+  "aggregate_scores": {
+    "faithfulness": 0.925,
+    "answer_relevancy": 0.884,
+    "context_recall": 1.0
+  },
+  "test_cases": [
+    {
+      "question": "Casual leave carry forward karne ke rules kya hain?",
+      "retrieved_context": [
+        "3. Casual Leave & Carry Forward Rules\nCasual Leaves (CL) are intended for short-term, personal, or urgent domestic requirements. Employees\nare allotted 12 Casual Leaves per year, allocated on a pro-rata basis for new joiners.\nCarry Forward Limit: Under the standard company benefits scheme, employees are permitted to carry\nforward a maximum of 15 unused casual leaves into the next calendar year. Any additional remaining\nleaves beyond this limit will automatically expire.\nPlease note that Casual Leaves cannot be combined with Earned Leaves unless explicitly approved by\nthe local HR representative under exceptional personal emergencies. Casual leaves cannot be encashed\nat the time of separation.",
+        "Acme Corp India\nStandard Operating Procedures: Employee Leave Manual\n1. Purpose & General Guidelines\nWelcome to the Acme Corp Employee Leave Manual. This document outlines the standard rules,\nguidelines, and parameters governing leave policies for all full-time employees operating in Indian\nlocations. The objective is to ensure structured, balanced PTO (Paid Time Off) tracking and compliance\nwith regional labor laws.\nAll leaves must be planned in advance where possible and applied for via the online Employee\nSelf-Service (ESS) Portal. Unauthorized absence or failure to register leave requests might lead to a loss\nof pay and potential disciplinary review."
+      ],
+      "generated_answer": "Casual leave carry forward karne ke liye, employees ko agle calendar year mein maximum 15 unused casual leaves carry forward karne ki permission hai. Is limit se zyada bachi hui koi bhi additional leaves automatically expire ho jayengi.",
+      "ground_truth": "Employees ko agle calendar year mein maximum 15 unused casual leaves carry forward karne ki permission hai. Is limit se zyada bachi hui koi bhi additional leaves automatically expire ho jayengi."
+    },
+    {
+      "question": "कंपनी की लीव पॉलिसी के तहत हम कितनी छुट्टियां कैरी फॉरवर्ड कर सकते हैं?",
+      "retrieved_context": [
+        "2. Annual Sick Leave & Earned Leave Allotments\nEvery employee is credited with a set number of Sick Leaves (SL) and Earned Leaves (EL) at the start of\neach calendar year. These leaves are designed to safeguard your health and provide rest and\nrecuperation time.\nEarned Leaves (EL): Full-time employees are allotted 18 Earned Leaves per year, accrued monthly at a\nrate of 1.5 leaves per month. Earned leaves can be accumulated up to a maximum limit of 45 days. Any\naccruals beyond 45 days will lapse automatically.\nSick Leaves (SL): Employees receive 12 Sick Leaves annually. For medical absences extending beyond\n3 consecutive days, a valid medical certificate signed by a registered medical practitioner must be\nuploaded to the ESS Portal upon returning to work.",
+        "4. Maternity, Paternity, and Bereavement Policies Acme Corp is committed to supporting employees through major life events. We offer progressive family support leaves structured as follows: Maternity Leave: Female employees are eligible for 26 weeks of fully paid Maternity Leave in accordance with the Maternity Benefit Amendment Act. This can be availed up to 8 weeks prior to the expected date of delivery. Paternity Leave: Male employees are entitled to 10 consecutive business days of fully paid Paternity Leave. This leave must be utilized within 6 months of the child's birth date, after which the leaves will lapse. Bereavement Leave: In the unfortunate event of a demise in the immediate family, employees are"
+      ],
+      "generated_answer": "Casual leave carry forward karne ke liye, employees ko agle calendar year mein maximum 15 unused casual leaves carry forward karne ki permission hai. Is limit se zyada bachi hui koi bhi additional leaves automatically expire ho jayengi.",
+      "ground_truth": "कंपनी की पॉलिसी के अनुसार, कर्मचारी अगले साल में अधिकतम 15 बिना इस्तेमाल की गई कैजुअल लीव्स (casual leaves) कैरी फॉरवर्ड कर सकते हैं।"
+    }
+  ]
+}
