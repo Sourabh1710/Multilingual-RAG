@@ -1,3 +1,4 @@
+import os
 import asyncio
 import sys
 from pathlib import Path
@@ -51,9 +52,8 @@ async def main(query: str) -> None:
         return
 
     # 5. Generate Grounded Multilingual Answer
-    print(
-        f"\n[STEP 3] Generating grounded response using active provider ({generation_pipeline.provider.upper()})..."
-    )
+    active_provider = os.getenv("GENERATOR_PROVIDER", "gemini").upper()
+    print(f"\n[STEP 3] Generating response using active provider ({active_provider})...")
     answer = await generation_pipeline.generate_answer(
         query=query, context_chunks=retrieved_chunks
     )
