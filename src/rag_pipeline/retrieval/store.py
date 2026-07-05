@@ -97,3 +97,15 @@ class QdrantStore:
         # Use self.client.upsert to asynchronously upload the list of points
         await self.client.upsert(collection_name=collection_name, points=points)
         print("[QDRANT] Upsert complete.")
+    
+    async def clear_collection(self, collection_name: str) -> None:
+        """
+        Asynchronously deletes a collection if it exists, clearing all old points.
+        """
+        collections_response = await self.client.get_collections()
+        existing_names = [col.name for col in collections_response.collections]
+
+        if collection_name in existing_names:
+            print(f"[QDRANT] Clearing old collection '{collection_name}' to prevent data pollution...")
+            await self.client.delete_collection(collection_name)
+            print(f"[QDRANT] Old collection '{collection_name}' cleared successfully.")
