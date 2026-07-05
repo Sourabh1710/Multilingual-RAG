@@ -59,7 +59,7 @@ select = [
     "B",  # flake8-bugbear (common bugs)
     "C4", # flake8-comprehensions
 ]
-ignore = ["E501", "F841", "I"] # Now this will be strictly respected!
+ignore = ["E501", "F841", "I","W"] # Now this will be strictly respected!
 
 [tool.mypy]
 python_version = "3.12"
