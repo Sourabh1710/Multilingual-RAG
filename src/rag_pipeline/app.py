@@ -10,6 +10,7 @@ from rag_pipeline.ingestion.pipeline import IngestionPipeline
 from rag_pipeline.embeddings.pipeline import EmbeddingPipeline
 from rag_pipeline.retrieval.pipeline import RetrievalPipeline
 from rag_pipeline.generation.pipeline import GenerationPipeline
+from rag_pipeline.embeddings.model import EmbeddingModel
 
 # Load environment variables
 load_dotenv()
@@ -41,9 +42,13 @@ def run_async(coro):
 
 @st.cache_resource
 def get_pipelines():
+    # 1. Instantiate the heavy EmbeddingModel EXACTLY ONCE
+    shared_model = EmbeddingModel()
+
+    # 2. Pass the shared model as a reference to both pipelines!
     ingest = IngestionPipeline(chunk_size=800, chunk_overlap=150)
-    embed = EmbeddingPipeline(collection_name=COLLECTION_NAME)
-    retrieval = RetrievalPipeline(collection_name=COLLECTION_NAME)
+    embed = EmbeddingPipeline(collection_name=COLLECTION_NAME, model=shared_model)
+    retrieval = RetrievalPipeline(collection_name=COLLECTION_NAME, model=shared_model)
     generation = GenerationPipeline()
     return ingest, embed, retrieval, generation
 

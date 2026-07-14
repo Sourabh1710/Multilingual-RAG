@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from rag_pipeline.embeddings.model import EmbeddingModel
 from rag_pipeline.ingestion.chunker import Chunk
@@ -7,7 +7,7 @@ from rag_pipeline.retrieval.store import QdrantStore
 
 class EmbeddingPipeline:
     def __init__(
-        self, collection_name: str = "document_chunks", batch_size: int = 16
+        self, collection_name: str = "document_chunks", batch_size: int = 16, model: Optional[EmbeddingModel] = None
     ) -> None:
         """
         Initializes the embedding pipeline with the model, Qdrant client, and batch limits.
@@ -17,7 +17,7 @@ class EmbeddingPipeline:
 
         # Instantiate the modular database store and embedding model wrappers
         self.store = QdrantStore()
-        self.model = EmbeddingModel()
+        self.model = model or EmbeddingModel()
 
     async def initialize_database(self) -> None:
         """

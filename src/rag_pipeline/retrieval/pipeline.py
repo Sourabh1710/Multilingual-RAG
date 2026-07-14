@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from rag_pipeline.embeddings.model import EmbeddingModel
 from rag_pipeline.ingestion.chunker import Chunk
@@ -8,12 +8,12 @@ from rag_pipeline.retrieval.store import QdrantStore
 
 
 class RetrievalPipeline:
-    def __init__(self, collection_name: str = "document_chunks") -> None:
+    def __init__(self, collection_name: str = "document_chunks", model: Optional[EmbeddingModel] = None) -> None:
         """
         Initializes the retrieval pipeline with the embedding model and database store.
         """
         self.collection_name = collection_name
-        self.model = EmbeddingModel()
+        self.model = model or EmbeddingModel()
         self.store = QdrantStore()
 
     async def retrieve(self, query: str, top_k: int = 3) -> List[Chunk]:
