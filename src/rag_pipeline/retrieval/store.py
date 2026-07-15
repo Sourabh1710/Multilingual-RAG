@@ -19,7 +19,7 @@ class QdrantStore:
 
         # If the host is a full URL (cloud endpoint), use the 'url' parameter
         if qdrant_host.startswith("http://") or qdrant_host.startswith("https://"):
-            self.client = AsyncQdrantClient(url=qdrant_host, api_key=qdrant_api_key)
+            self.client = AsyncQdrantClient(url=qdrant_host, api_key=qdrant_api_key, timeout=15)
         else:
             # Otherwise, use standard host and port parameters for local connections
             port_str = str(port) if port is not None else os.getenv("QDRANT_PORT", "6333")
@@ -28,7 +28,7 @@ class QdrantStore:
             except ValueError:
                 qdrant_port = 6333
             
-            self.client = AsyncQdrantClient(host=qdrant_host, port=qdrant_port, api_key=qdrant_api_key)
+            self.client = AsyncQdrantClient(host=qdrant_host, port=qdrant_port, api_key=qdrant_api_key, timeout=15)
 
     async def create_collection(self, collection_name: str, vector_size: int) -> None:
         """

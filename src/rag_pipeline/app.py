@@ -2,6 +2,7 @@ import os
 import sys
 import types
 
+# 1. Force single-threaded execution for PyTorch
 os.environ["OMP_NUM_THREADS"] = "1"
 os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
@@ -9,6 +10,23 @@ os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1"
 
 import streamlit as st
+
+# 2. Sync Streamlit secrets into os.environ so all os.getenv() calls work throughout the pipeline modules
+for key in [
+    "GENERATOR_PROVIDER", "GROQ_API_KEY", "GEMINI_API_KEY", "SARVAM_API_KEY",
+    "QDRANT_HOST", "QDRANT_PORT", "QDRANT_API_KEY", "HF_TOKEN"
+]:
+    if key in st.secrets and key not in os.environ:
+        os.environ[key] = str(st.secrets[key])
+
+# 3. Handle Ragas VertexAI import mock
+if "langchain_community.chat_models.vertexai" not in sys.modules:
+    mock_vertex_module = types.ModuleType("langchain_community.chat_models.vertexai")
+    class DummyChatVertexAI:
+        pass
+    mock_vertex_module.ChatVertexAI = DummyChatVertexAI # type: ignore
+    sys.modules["langchain_community.chat_models.vertexai"] = mock_vertex_module
+
 import asyncio
 import os
 import tempfile
@@ -34,33 +52,25 @@ st.set_page_config(
     layout="wide"
 )
 
-# THE ASYNC RUNNER WRAPPER
 def run_async(coro):
     """
-    Safely runs an async coroutine inside Streamlit's synchronous environment,
-    preserving persistent database and API connection pools without causing loop crashes.
-    Fixed it after successful run once :)
+    Runs a coroutine in a fresh event loop each time to prevent loop-reuse hangs.
     """
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-    
-    return loop.run_until_complete(coro)
+    return asyncio.run(coro)
 
 
 @st.cache_resource
 def get_pipelines():
-    # 1. Instantiate the heavy EmbeddingModel EXACTLY ONCE
-    shared_model = EmbeddingModel()
-
-    # 2. Pass the shared model as a reference to both pipelines!
-    ingest = IngestionPipeline(chunk_size=800, chunk_overlap=150)
-    embed = EmbeddingPipeline(collection_name=COLLECTION_NAME, model=shared_model)
-    retrieval = RetrievalPipeline(collection_name=COLLECTION_NAME, model=shared_model)
-    generation = GenerationPipeline()
-    return ingest, embed, retrieval, generation
+    try:
+        shared_model = EmbeddingModel()
+        ingest = IngestionPipeline(chunk_size=800, chunk_overlap=150)
+        embed = EmbeddingPipeline(collection_name=COLLECTION_NAME, model=shared_model)
+        retrieval = RetrievalPipeline(collection_name=COLLECTION_NAME, model=shared_model)
+        generation = GenerationPipeline()
+        return ingest, embed, retrieval, generation
+    except Exception as e:
+        st.error(f"Failed to initialize pipelines: {e}")
+        st.stop()
 
 ingest_pipeline, embed_pipeline, retrieval_pipeline, generation_pipeline = get_pipelines()
 
@@ -100,6 +110,33 @@ with st.sidebar:
                     st.session_state["ingested_file"] = uploaded_file.name
                 except Exception as e:
                     st.error(f"Ingestion failed: {str(e)}")
+
+    # DYNAMICALLY MAPPED MODEL CONFIGURATION
+    provider_to_label = {
+        "gemini": "Gemini (Google)",
+        "sarvam": "Sarvam AI (Native Indic)",
+        "groq": "Llama 3.3 (Groq/Free)"
+    }
+    
+    # Automatically select the default option based on the active GENERATOR_PROVIDER secret
+    default_provider = os.getenv("GENERATOR_PROVIDER", "gemini").lower()
+    default_label = provider_to_label.get(default_provider, "Gemini (Google)")
+    options_list = list(provider_to_label.values())
+
+    st.markdown("---")
+    st.header("⚙️ Model Configuration")
+    selected_model_ui = st.selectbox(
+        "Select LLM Provider:",
+        options=options_list,
+        index=options_list.index(default_label) # Matches the environment secret automatically
+    )
+    
+    model_provider_map = {
+        "Gemini (Google)": "gemini",
+        "Sarvam AI (Native Indic)": "sarvam",
+        "Llama 3.3 (Groq/Free)": "groq"
+    }
+    active_provider = model_provider_map[selected_model_ui]
 
     st.markdown("---")
     st.header("⚙️ Model Configuration")
