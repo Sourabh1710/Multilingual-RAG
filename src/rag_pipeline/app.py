@@ -141,10 +141,11 @@ with st.sidebar:
     st.markdown("---")
     st.header("⚙️ Model Configuration")
     selected_model_ui = st.selectbox(
-        "Select LLM Provider:",
-        options=["Gemini (Google)", "Sarvam AI (Native Indic)", "Llama 3.3 (Groq/Free)"],
-        index=0
-    )
+    "Select LLM Provider:",
+    options=["Gemini (Google)", "Sarvam AI (Native Indic)", "Llama 3.3 (Groq/Free)"],
+    index=0,
+    key="llm_provider_select",
+)
     model_provider_map = {
         "Gemini (Google)": "gemini",
         "Sarvam AI (Native Indic)": "sarvam",
